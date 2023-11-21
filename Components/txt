@@ -1,0 +1,104 @@
+//   useEffect(() => {
+//     db.transaction((tx) => {
+//       tx.executeSql(
+//         'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, address TEXT, phone TEXT)',
+//         [],
+//         () => console.log('Table created successfully'),
+//         (error) => console.error(error)
+//       )
+//     })
+
+
+//     console.log("hi")
+//   }, []);
+
+//   const insertDataToDatabase = (values) => {
+//     db.transaction((tx) => {
+//       tx.executeSql(
+//         'INSERT INTO users (name, email, address, phone) VALUES (?, ?, ?, ?)',
+//         [values.name, values.email, values.address, values.phone],
+//         () => {
+//           console.log('Data inserted successfully');
+
+//         },
+//         (error) => {
+//           console.error('Error inserting data:', error);
+//         }
+//       );
+//     });
+//   };
+//   const addname = () => {
+//     db.transaction(tx => {
+
+//       tx.executeSql('INSERT INTO names (name) values (?) ', [currentname],
+//         (txobj, resultSet) => {
+//           let existingnames = [...names];
+//           existingnames.push({ id: resultSet.insertId, name: currentname });
+//           setNames(existingnames);
+//           setCurrentname(undefined);
+//         },
+//         (txobj, error) => console.log("errors  addname===>", error.message));
+//     });
+//   }
+
+
+
+// ====================================================================================================================
+// // for testing db creation
+
+// const [name, setName] = useState([]);
+// const [currentname, setCurrentname] = useState('');
+
+  // useEffect(() => {
+  //   db.transaction(tx => {
+  //     tx.executeSql('CREATE TABLE IF NOT EXISTS names (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)'),
+  //       () => console.log("tabelcreated sucessfuly")
+  //   });
+
+  //   db.transaction(tx => {
+  //     tx.executeSql('SELECT * FROM names', null,
+  //       (txObj, resultSet) => setName(resultSet.rows._array),
+  //       (txObj, error) => console.log(error)
+  //     );
+  //   });
+
+  // }, [db]);
+//   const addName = () => {
+//     db.transaction(tx => {
+//       tx.executeSql('INSERT INTO names (name) values (?)', [currentname],
+//         (txObj, resultSet) => {
+//           let existingNames = [...name];
+//           existingNames.push({ id: resultSet.insertId, name: currentname });
+//           setName(existingNames);
+//           setCurrentname(undefined);
+//         },
+//         (txObj, error) => console.log(error.message)
+//       );
+//     });
+//   }
+//   const showname = () => {
+//     return name.map((name, index) => {
+//       return (
+//         <View key={index} style={styles.row}>
+//           <View>
+//             <Text  >{name.name}</Text>
+//           </View>
+//           <View>
+//             <Text >{name.email}</Text>
+//           </View>
+//           <View>
+//             <Text   >{name.address}</Text>
+//           </View>
+//           <View>
+//             <Text   >{name.phone}</Text>
+//           </View>
+
+//         </View>
+//       );
+//     });
+
+
+// <TextInput value={currentname} placeholder='name' onChangeText={setCurrentname} />
+// {showname()} 
+// <Button title='addname' onPress={addName} />
+//   };
