@@ -3,7 +3,7 @@
     "name": "userform_new",
     "slug": "userform_new",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": " portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
