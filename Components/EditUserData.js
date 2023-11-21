@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Alert, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar'
 import { Formik } from 'formik';
@@ -27,7 +27,7 @@ const EditUserSchema = Yup.object().shape({
 
 const EditUserData = ({ route }) => {
     const db = SQLite.openDatabase("shivasnews_dbss");
-    const { user, onUpdate } = route.params;
+    const { user } = route.params;
     const checkNameExists = async (name) => {
         return new Promise((resolve, reject) => {
             db.transaction((tx) => {
@@ -59,7 +59,6 @@ const EditUserData = ({ route }) => {
                 (txobj, resultset) => {
                     if (resultset.rowsAffected > 0) {
                         Alert.alert("Data Updated sucessfully")
-                        onUpdate();
                         console.log('Update successful');
                     } else {
                         console.log('Update failed');
@@ -99,6 +98,9 @@ const EditUserData = ({ route }) => {
                                     }}
                                     value={values.name}
                                 />
+                                {touched.name && errors.name && (
+                                    <Text style={styles.errorTxt}>{errors.name}</Text>
+                                )}
                             </View>
                             <View style={styles.inputWrapper}>
                                 <TextInput
@@ -110,6 +112,9 @@ const EditUserData = ({ route }) => {
                                     }}
                                     value={values.email}
                                 />
+                                {touched.email && errors.email && (
+                                    <Text style={styles.errorTxt}>{errors.email}</Text>
+                                )}
                             </View>
                             <View style={styles.inputWrapper}>
                                 <TextInput
@@ -121,18 +126,21 @@ const EditUserData = ({ route }) => {
                                     }}
                                     value={values.address}
                                 />
+                                {touched.address && errors.address && (
+                                    <Text style={styles.errorTxt}>{errors.address}</Text>
+                                )}
                             </View>
                             <View style={styles.inputWrapper}>
-                                <TextInput
-                                    style={styles.inputStyle}
+                                <TextInput style={styles.inputStyle}
                                     placeholder='Phone'
-                                    value={values.phone}
                                     keyboardType='phone-pad'
-                                    onChangeText={(text) => {
-                                        setFieldTouched('phone');
-                                        handleChange('phone');
-                                    }}
+                                    onChangeText={handleChange('phone')}
+                                    onBlur={() => setFieldTouched('phone')}
+                                    value={values.phone}
                                 />
+                                {touched.phone && errors.phone && (
+                                    <Text style={styles.errorTxt}>{errors.phone}</Text>
+                                )}
                             </View>
                             <TouchableOpacity
                                 style={styles.submitBtn}

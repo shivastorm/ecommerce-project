@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Alert, TouchableOpacity, SafeAreaView, ScrollView, Text, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import * as SQLite from "expo-sqlite"
@@ -12,7 +12,16 @@ const UserInfo = ({ route, navigation }) => {
     // console.log("datas route=== state data>", Data)
     // console.log("datas route===loginname>", loginName)
     // console.log("datas route===>", value[0].name)
-    const fetchUserData = useCallback(() => {
+    useEffect(() => {
+        const foundUser = value.find(user => user.name === loginName);
+        if (foundUser.name === "admin") {
+            setData(value)
+        } else {
+            setData(foundUser);
+        }
+        // console.log("login name==>",foundUser.name)
+    }, [value, loginName]);
+    const fetchUserData = () => {
         db.transaction((tx) => {
             tx.executeSql(
                 'SELECT * FROM users',
@@ -23,7 +32,7 @@ const UserInfo = ({ route, navigation }) => {
                 (error) => console.error('Error retrieving user data:', error.message)
             );
         });
-    }, [db]);
+    }
     const deleteUserVlaue = (id) => {
         db.transaction(tx => {
             tx.executeSql('DELETE FROM users WHERE id =? ', [id],
@@ -35,20 +44,8 @@ const UserInfo = ({ route, navigation }) => {
             );
         });
     };
-
-    useEffect(() => {
-        const foundUser = value.find(user => user.name === loginName);
-        if (foundUser.name === "admin") {
-            setData(value)
-        } else {
-            setData(foundUser);
-        }
-        // console.log("login name==>",foundUser.name)
-    }, [value, loginName]);
-
-
     const EditScreen = (user) => {
-        navigation.navigate('EditScreen', { user, onUpdate: fetchUserData })
+        navigation.navigate('EditScreen', { user })
     }
     return (
         <>
@@ -93,7 +90,7 @@ const UserInfo = ({ route, navigation }) => {
                             }
                             <Text style={styles.title}>Data Manipulation </Text>
                             {loginName === 'admin' ?
-                                <Text style={{fontSize:15,fontWeight:'400'}}>Data manipulation is restricted in ADMIN LOGIN</Text>
+                                <Text style={{ fontSize: 15, fontWeight: '400' }}>Data manipulation is restricted in ADMIN LOGIN</Text>
                                 :
                                 <View style={styles.updatecell}>
                                     <Text style={styles.cell}>ID :  {Data.id}</Text>
